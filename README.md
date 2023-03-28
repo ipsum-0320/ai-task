@@ -1,10 +1,6 @@
 # AI-Task
 
-本项目存放了毕设研究所需要的 AI 任务，它们是作为被调度的计算任务而存在的。AI 任务如下所示：
-
-* 蔬菜识别任务。
-
-> 记录一个 BUG，在 Windows 中打开 VSCode 运行 python 指令时，可能会出现不起作用的情况，此时以管理员权限打开 VSCode 即可解决。
+本项目存放了毕设研究所需要的 AI 任务，它们是作为被调度的计算任务而存在的。主分支不含有任何 AI 任务，可通过切换分支查看相应的任务。
 
 # 一些 python 工程化的知识
 
@@ -36,7 +32,7 @@ Flask-WTF==0.14.2
 ## 3.如何创建虚拟环境呢 ?
 
 1. 创建虚拟环境目录，`mkdir venv && cd venv`。
-2. 创建虚拟环境，`python3 -m venv .`。
+2. 创建虚拟环境，`python -m venv .`。
 3. 如果是 Windows 系统则进入 `Scripts` 目录，如果是 Linux/Mac 系统则进入 `bin` 目录。
 4. 如果是 Windows 系统则执行 `activate.bat`（cmd），如果是 Linux/Mac 系统则执行 `source activate`（bash）。
 5. 此时我们进入了虚拟环境（表现为 Linux 意义上的用户名前面会多出一个虚拟环境目录），如果我们想要退出，可以选择执行 `deactivate` 命令。
