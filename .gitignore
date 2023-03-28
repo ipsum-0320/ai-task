@@ -1,6 +1,0 @@
-venv
-# 忽略 Python 虚拟环境相关的配置。
-
-.vscode
-
-yolov5
