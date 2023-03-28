@@ -5,16 +5,16 @@
 `detect.py` 为使用训练好的模型进行目标检测的入口文件，使用方法如下：
 ```bash
 $ python detect.py --weights yolov5s.pt --source \
-0                               # webcam
-img.jpg                         # image
-vid.mp4                         # video
-screen                          # screenshot
-path/                           # directory
-list.txt                        # list of images
-list.streams                    # list of streams
-'path/*.jpg'                    # glob
-'https://youtu.be/Zgi9g1ksQHc'  # YouTube
-'rtsp://example.com/media.mp4'  # RTSP, RTMP, HTTP stream
+    0                               # webcam
+    img.jpg                         # image
+    vid.mp4                         # video
+    screen                          # screenshot
+    path/                           # directory
+    list.txt                        # list of images
+    list.streams                    # list of streams
+    'path/*.jpg'                    # glob
+    'https://youtu.be/Zgi9g1ksQHc'  # YouTube
+    'rtsp://example.com/media.mp4'  # RTSP, RTMP, HTTP stream
 ```
 
 > 项目的原 github 地址为：https://github.com/ultralytics/yolov5。
