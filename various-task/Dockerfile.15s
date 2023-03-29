@@ -1,1 +1,5 @@
-FROM ""
+FROM ai-task-base:latest
+
+WORKDIR /ai-task
+
+CMD ["python", "detect.py", "--weights", "yolov5s.pt", "--source", "./various-task/video/15s.mp4"]

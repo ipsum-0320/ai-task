@@ -69,3 +69,19 @@ Flask-WTF==0.14.2
 4. 如果是 Windows 系统则执行 `activate.bat`（cmd），如果是 Linux/Mac 系统则执行 `source activate`（bash）。
 5. 此时我们进入了虚拟环境（表现为 Linux 意义上的用户名前面会多出一个虚拟环境目录），如果我们想要退出，可以选择执行 `deactivate` 命令。
 
+# 部署镜像时遇到的问题
+
+## 1.image 被自动删除
+
+这个是 k8s 的问题，Kubernetes 会自动删除未使用的镜像，为了避免这个问题，我们可以修改相应节点上的配置文件 `/var/lib/kubelet/config.yaml`：
+```yaml
+imageMinimumGCAge: 525600m
+```
+
+## 2.docker image 共享磁盘空间
+
+举一个例子，一个 image-A 占用磁盘 4G，如果在另一个 image-B 中只是 FROM 了 image-A，别的什么也没有做，那么 image-A 和 image-B 一共会占用 4 G 空间，而不是 8 G。
+
+这是因为 Docker 使用分层存储技术，每个镜像都由一系列文件系统层级组成。当多个镜像共享同一层时，它们仅需保存相同的存储区块，而不是复制整个存储区块，从而节省了存储空间。因此，FROM 指令只是将基础镜像添加到新镜像的文件系统层级中，并不会导致重复占用存储空间。
+
+> 另外，在 Docker 容器中运行的命令默认都是 root 权限的。
