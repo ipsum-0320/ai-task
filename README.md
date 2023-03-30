@@ -76,10 +76,11 @@ Flask-WTF==0.14.2
 这个是 k8s 的问题，Kubernetes 会自动删除未使用的镜像，为了避免这个问题，我们可以修改相应节点上的配置文件 `/var/lib/kubelet/config.yaml`：
 ```yaml
 imageMinimumGCAge: 525600m
+imageGCHighThresholdPercent: 99
 ```
 修改完之后需要重新启动 kubelet：
 ```bash
-systemctl daemon-reload 
+systemctl daemon-reload
 systemctl restart kubelet
 ```
 
@@ -104,3 +105,17 @@ KUBELET_EXTRA_ARGS=--eviction-hard=nodefs.available<0.1% --eviction-hard=imagefs
 systemctl daemon-reload && systemctl restart kubelet
 systemctl status -l kubelet # 观察是否生效。
 ```
+
+## 为什么 % CPU 有时候会超出 100?
+在 ps 命令中，进程的 %CPU 表示进程在一段时间内占用 CPU 的百分比。当一个进程使用多个 CPU 核心或者同时运行多个线程时，该进程的 %CPU 可能会超过 100。
+
+例如，如果一个进程同时占用了两个 CPU 核心的全部计算能力，那么它的 %CPU 就会显示为 200%。同样地，如果一个进程在一个时间段内只是占用了 CPU 的一部分时间，但是在另一个时间段内却占用了整个 CPU，那么它的 %CPU 可能会在这两个时间段内都超过 100。
+
+* 对于单核 CPU 系统，%CPU 的计算方法为：进程占用 CPU 时间 / 总 CPU 时间。其中，进程占用 CPU 时间是指进程在这段时间内运行所消耗的 CPU 时间，总 CPU 时间是指 CPU 运行的总时间。
+
+* 对于多核 CPU 系统，%CPU 的计算方法相对复杂一些。在这种情况下，ps 命令会把每个 CPU 核心的使用率都算上，然后将它们相加，得到总的 %CPU 值。具体计算公式如下：（进程在每个 CPU 核心的运行时间之和 / 每个 CPU 核心的总运行时间之和） * CPU 核心数量。其中，计算结果乘以 CPU 核心数是为了将各个核心的使用率累加起来，得到总的 %CPU 值。
+
+
+
+
+
