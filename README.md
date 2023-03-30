@@ -77,6 +77,13 @@ Flask-WTF==0.14.2
 ```yaml
 imageMinimumGCAge: 525600m
 ```
+修改完之后需要重新启动 kubelet：
+```bash
+systemctl daemon-reload 
+systemctl restart kubelet
+```
+
+> build image: docker build -t ai-task-base -f Dockerfile .
 
 ## 2.docker image 共享磁盘空间
 
@@ -85,3 +92,15 @@ imageMinimumGCAge: 525600m
 这是因为 Docker 使用分层存储技术，每个镜像都由一系列文件系统层级组成。当多个镜像共享同一层时，它们仅需保存相同的存储区块，而不是复制整个存储区块，从而节省了存储空间。因此，FROM 指令只是将基础镜像添加到新镜像的文件系统层级中，并不会导致重复占用存储空间。
 
 > 另外，在 Docker 容器中运行的命令默认都是 root 权限的。
+
+> 查看 Linux 的磁盘使用情况 `df -h /`。
+
+## 3.解决 DiskPressure
+
+通过配置解决，如下所示：
+```bash
+vi /etc/sysconfig/kubelet
+KUBELET_EXTRA_ARGS=--eviction-hard=nodefs.available<0.1% --eviction-hard=imagefs.available<0.1%
+systemctl daemon-reload && systemctl restart kubelet
+systemctl status -l kubelet # 观察是否生效。
+```
